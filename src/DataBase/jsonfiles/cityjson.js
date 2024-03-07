@@ -1,4 +1,4 @@
-const city = require('../../models/city');
+const city = require('../../Models/city');
 
 function createCities() {
     city.bulkCreate(
