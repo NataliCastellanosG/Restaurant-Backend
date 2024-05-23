@@ -1,6 +1,11 @@
 require('express')
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken')
 const user = require('../Models/user')
+
+//ESTO ES SOLO PARA LA PRÁCTICA DEL EJERCICIO DEL JWT - ESTO NO ES RECOMENDADO PARA NINGUN DESARROLLO
+//THIS IS ONLY FOR JWT EXERCISE PRACTICE - THIS IS NOT RECOMMENDED FOR ANY DEVELOPMENT
+const jwtPassword = 'qwe987gfd'
 
 async function listUserRoles(req, res){
     try{
@@ -48,7 +53,13 @@ async function login (req, res){
         if(!validPassword)
             return res.status(401).json({message: "Invalid password"})
 
-        return res.status(200).json({ message: "Welcome"})
+        const token = jwt.sign(
+            { userId: userData.userId, userRole: userData.userRole },
+            jwtPassword,
+            { expiresIn: '1h'}
+        )
+
+        return res.status(200).json({ token })
     }
     catch (e){
         console.log(e)
